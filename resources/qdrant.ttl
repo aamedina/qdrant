@@ -3245,7 +3245,7 @@ qdrant:SetPayload a jsonschema:ObjectSchema ;
       ]
     [
       jsonschema:propertyName "filter" ;
-      rdf:type jsonschema:AnyOfSchema ;
+      rdf:type jsonschema:ObjectSchema ;
       jsonschema:anyOf (
         qdrant:Filter
         jsonschema:NullSchema
@@ -3338,7 +3338,7 @@ qdrant:SnapshotRecover a jsonschema:ObjectSchema ;
       ]
     [
       jsonschema:propertyName "priority" ;
-      rdf:type jsonschema:AnyOfSchema ;
+      rdf:type jsonschema:ObjectSchema ;
       jsonschema:anyOf (
         qdrant:SnapshotPriority
         jsonschema:NullSchema
@@ -3453,7 +3453,7 @@ qdrant:UpdateCollection a jsonschema:ObjectSchema ;
     [
       jsonschema:propertyName "optimizers_config" ;
       dcterms:description "Custom params for Optimizers.  If none - values from service configuration file are used. This operation is blocking, it will only proceed ones all current optimizations are complete" ;
-      rdf:type jsonschema:AnyOfSchema ;
+      rdf:type jsonschema:ObjectSchema ;
       jsonschema:anyOf (
         qdrant:OptimizersConfigDiff
         jsonschema:NullSchema
@@ -3462,7 +3462,7 @@ qdrant:UpdateCollection a jsonschema:ObjectSchema ;
     [
       jsonschema:propertyName "params" ;
       dcterms:description "Collection base params.  If none - values from service configuration file are used." ;
-      rdf:type jsonschema:AnyOfSchema ;
+      rdf:type jsonschema:ObjectSchema ;
       jsonschema:anyOf (
         qdrant:CollectionParamsDiff
         jsonschema:NullSchema
@@ -3521,7 +3521,7 @@ qdrant:UpdateVectors a jsonschema:ObjectSchema ;
 # UsingVector
 # {"anyOf" [{"type" "string"}]}
 
-qdrant:UsingVector a jsonschema:AnyOfSchema ;
+qdrant:UsingVector a jsonschema:ObjectSchema ;
   jsonschema:anyOf (
     jsonschema:StringSchema
     ) .
@@ -3529,7 +3529,7 @@ qdrant:UsingVector a jsonschema:AnyOfSchema ;
 # ValueVariants
 # {"anyOf" [{"type" "string"} {"type" "integer", "format" "int64"} {"type" "boolean"}]}
 
-qdrant:ValueVariants a jsonschema:AnyOfSchema ;
+qdrant:ValueVariants a jsonschema:ObjectSchema ;
   jsonschema:anyOf (
     jsonschema:StringSchema
     [ rdf:type jsonschema:IntegerSchema ;
@@ -3602,7 +3602,7 @@ qdrant:VectorDataConfig a jsonschema:ObjectSchema ;
     [
       jsonschema:propertyName "quantization_config" ;
       dcterms:description "Vector specific quantization config that overrides collection config" ;
-      rdf:type jsonschema:AnyOfSchema ;
+      rdf:type jsonschema:ObjectSchema ;
       jsonschema:anyOf (
         qdrant:QuantizationConfig
         jsonschema:NullSchema

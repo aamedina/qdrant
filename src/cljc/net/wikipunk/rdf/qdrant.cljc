@@ -195,31 +195,31 @@
 
 (def ClusterStatusTelemetry
   {:db/ident :qdrant/ClusterStatusTelemetry,
-   :jsonschema/properties [{:jsonschema/propertyName "role",
-                            :rdf/type :qdrant/StateRole}
-                           {:jsonschema/format "uint64",
+   :jsonschema/properties [{:jsonschema/format "uint64",
                             :jsonschema/minimum 0,
                             :jsonschema/propertyName "term",
-                            :rdf/type :jsonschema/IntegerSchema}
-                           {:jsonschema/propertyName "is_voter",
-                            :rdf/type :jsonschema/BooleanSchema}
-                           {:jsonschema/format "uint",
-                            :jsonschema/minimum 0,
-                            :jsonschema/propertyName "number_of_peers",
                             :rdf/type :jsonschema/IntegerSchema}
                            {:jsonschema/format "uint64",
                             :jsonschema/minimum 0,
                             :jsonschema/propertyName "commit",
                             :rdf/type :jsonschema/IntegerSchema}
-                           {:jsonschema/format "uint",
-                            :jsonschema/minimum 0,
-                            :jsonschema/propertyName "pending_operations",
-                            :rdf/type :jsonschema/IntegerSchema}
-                           {:jsonschema/propertyName "consensus_thread_status",
-                            :rdf/type :qdrant/ConsensusThreadStatus}
                            {:jsonschema/format "uint64",
                             :jsonschema/minimum 0,
                             :jsonschema/propertyName "peer_id",
+                            :rdf/type :jsonschema/IntegerSchema}
+                           {:jsonschema/propertyName "role",
+                            :rdf/type :qdrant/StateRole}
+                           {:jsonschema/format "uint",
+                            :jsonschema/minimum 0,
+                            :jsonschema/propertyName "number_of_peers",
+                            :rdf/type :jsonschema/IntegerSchema}
+                           {:jsonschema/propertyName "consensus_thread_status",
+                            :rdf/type :qdrant/ConsensusThreadStatus}
+                           {:jsonschema/propertyName "is_voter",
+                            :rdf/type :jsonschema/BooleanSchema}
+                           {:jsonschema/format "uint",
+                            :jsonschema/minimum 0,
+                            :jsonschema/propertyName "pending_operations",
                             :rdf/type :jsonschema/IntegerSchema}],
    :jsonschema/required ["commit"
                          "consensus_thread_status"
@@ -299,19 +299,7 @@
    :dcterms/description
    "Current statistics and configuration of the collection",
    :jsonschema/properties
-   [{:dcterms/description
-     "Number of segments in collection. Each segment has independent vector as payload indexes",
-     :jsonschema/format "uint",
-     :jsonschema/minimum 0,
-     :jsonschema/propertyName "segments_count",
-     :rdf/type :jsonschema/IntegerSchema}
-    {:dcterms/description
-     "Number of indexed vectors in the collection. Indexed vectors in large segments are faster to query, as it is stored in vector index (HNSW)",
-     :jsonschema/format "uint",
-     :jsonschema/minimum 0,
-     :jsonschema/propertyName "indexed_vectors_count",
-     :rdf/type :jsonschema/IntegerSchema}
-    {:jsonschema/propertyName "optimizer_status",
+   [{:jsonschema/propertyName "optimizer_status",
      :rdf/type :qdrant/OptimizersStatus}
     {:dcterms/description
      "Number of vectors in collection All vectors in collection are available for querying Calculated as `points_count x vectors_per_point` Where `vectors_per_point` is a number of named vectors in schema",
@@ -319,20 +307,32 @@
      :jsonschema/minimum 0,
      :jsonschema/propertyName "vectors_count",
      :rdf/type :jsonschema/IntegerSchema}
-    {:jsonschema/propertyName "status",
-     :rdf/type :qdrant/CollectionStatus}
     {:dcterms/description "Types of stored payload",
      :jsonschema/additionalProperties :qdrant/PayloadIndexInfo,
      :jsonschema/propertyName "payload_schema",
      :rdf/type :jsonschema/ObjectSchema}
-    {:jsonschema/propertyName "config",
-     :rdf/type :qdrant/CollectionConfig}
     {:dcterms/description
      "Number of points (vectors + payloads) in collection Each point could be accessed by unique id",
      :jsonschema/format "uint",
      :jsonschema/minimum 0,
      :jsonschema/propertyName "points_count",
-     :rdf/type :jsonschema/IntegerSchema}],
+     :rdf/type :jsonschema/IntegerSchema}
+    {:dcterms/description
+     "Number of indexed vectors in the collection. Indexed vectors in large segments are faster to query, as it is stored in vector index (HNSW)",
+     :jsonschema/format "uint",
+     :jsonschema/minimum 0,
+     :jsonschema/propertyName "indexed_vectors_count",
+     :rdf/type :jsonschema/IntegerSchema}
+    {:dcterms/description
+     "Number of segments in collection. Each segment has independent vector as payload indexes",
+     :jsonschema/format "uint",
+     :jsonschema/minimum 0,
+     :jsonschema/propertyName "segments_count",
+     :rdf/type :jsonschema/IntegerSchema}
+    {:jsonschema/propertyName "config",
+     :rdf/type :qdrant/CollectionConfig}
+    {:jsonschema/propertyName "status",
+     :rdf/type :qdrant/CollectionStatus}],
    :jsonschema/required ["config"
                          "indexed_vectors_count"
                          "optimizer_status"
@@ -586,14 +586,9 @@
      :jsonschema/propertyName "hnsw_config",
      :rdf/type :jsonschema/DataSchema}
     {:dcterms/description
-     "Number of shards in collection. Default is 1 for standalone, otherwise equal to the number of nodes Minimum is 1",
-     :jsonschema/format "uint32",
-     :jsonschema/minimum 0,
-     :jsonschema/propertyName "shard_number",
-     :rdf/type :jsonschema/IntegerSchema}
-    {:dcterms/description "Specify other collection to copy data from.",
-     :jsonschema/anyOf [:qdrant/InitFrom :jsonschema/NullSchema],
-     :jsonschema/propertyName "init_from",
+     "Custom params for WAL. If none - values from service configuration file are used.",
+     :jsonschema/anyOf [:qdrant/WalConfigDiff :jsonschema/NullSchema],
+     :jsonschema/propertyName "wal_config",
      :rdf/type :jsonschema/DataSchema}
     {:dcterms/description
      "Number of shards replicas. Default is 1 Minimum is 1",
@@ -601,23 +596,28 @@
      :jsonschema/minimum 0,
      :jsonschema/propertyName "replication_factor",
      :rdf/type :jsonschema/IntegerSchema}
-    {:dcterms/description
-     "Custom params for WAL. If none - values from service configuration file are used.",
-     :jsonschema/anyOf [:qdrant/WalConfigDiff :jsonschema/NullSchema],
-     :jsonschema/propertyName "wal_config",
-     :rdf/type :jsonschema/DataSchema}
+    {:jsonschema/propertyName "vectors",
+     :rdf/type :qdrant/VectorsConfig}
     {:dcterms/description
      "Defines how many replicas should apply the operation for us to consider it successful. Increasing this number will make the collection more resilient to inconsistencies, but will also make it fail if not enough replicas are available. Does not have any performance impact.",
      :jsonschema/format "uint32",
      :jsonschema/minimum 0,
      :jsonschema/propertyName "write_consistency_factor",
      :rdf/type :jsonschema/IntegerSchema}
+    {:dcterms/description "Specify other collection to copy data from.",
+     :jsonschema/anyOf [:qdrant/InitFrom :jsonschema/NullSchema],
+     :jsonschema/propertyName "init_from",
+     :rdf/type :jsonschema/DataSchema}
     {:dcterms/description
      "If true - point's payload will not be stored in memory. It will be read from the disk every time it is requested. This setting saves RAM by (slightly) increasing the response time. Note: those payload values that are involved in filtering and are indexed - remain in RAM.",
      :jsonschema/propertyName "on_disk_payload",
      :rdf/type :jsonschema/BooleanSchema}
-    {:jsonschema/propertyName "vectors",
-     :rdf/type :qdrant/VectorsConfig}
+    {:dcterms/description
+     "Number of shards in collection. Default is 1 for standalone, otherwise equal to the number of nodes Minimum is 1",
+     :jsonschema/format "uint32",
+     :jsonschema/minimum 0,
+     :jsonschema/propertyName "shard_number",
+     :rdf/type :jsonschema/IntegerSchema}
     {:dcterms/description
      "Custom params for Optimizers.  If none - values from service configuration file are used.",
      :jsonschema/anyOf [:qdrant/OptimizersConfigDiff :jsonschema/NullSchema],
@@ -1224,19 +1224,15 @@
   {:db/ident :qdrant/OptimizersConfig,
    :jsonschema/properties [{:jsonschema/format "uint",
                             :jsonschema/minimum 0,
-                            :jsonschema/propertyName "memmap_threshold",
-                            :rdf/type :jsonschema/IntegerSchema}
-                           {:jsonschema/format "uint",
-                            :jsonschema/minimum 0,
                             :jsonschema/propertyName "default_segment_number",
                             :rdf/type :jsonschema/IntegerSchema}
                            {:jsonschema/format "uint",
-                            :jsonschema/minimum 0,
-                            :jsonschema/propertyName "max_optimization_threads",
+                            :jsonschema/minimum 100,
+                            :jsonschema/propertyName "vacuum_min_vector_number",
                             :rdf/type :jsonschema/IntegerSchema}
-                           {:jsonschema/format "uint64",
+                           {:jsonschema/format "uint",
                             :jsonschema/minimum 0,
-                            :jsonschema/propertyName "flush_interval_sec",
+                            :jsonschema/propertyName "indexing_threshold",
                             :rdf/type :jsonschema/IntegerSchema}
                            {:jsonschema/format  "float",
                             :jsonschema/maximum 1,
@@ -1244,16 +1240,20 @@
                             :jsonschema/propertyName "deleted_threshold",
                             :rdf/type           :jsonschema/NumberSchema}
                            {:jsonschema/format "uint",
-                            :jsonschema/minimum 100,
-                            :jsonschema/propertyName "vacuum_min_vector_number",
-                            :rdf/type :jsonschema/IntegerSchema}
-                           {:jsonschema/format "uint",
                             :jsonschema/minimum 0,
                             :jsonschema/propertyName "max_segment_size",
                             :rdf/type :jsonschema/IntegerSchema}
+                           {:jsonschema/format "uint64",
+                            :jsonschema/minimum 0,
+                            :jsonschema/propertyName "flush_interval_sec",
+                            :rdf/type :jsonschema/IntegerSchema}
                            {:jsonschema/format "uint",
                             :jsonschema/minimum 0,
-                            :jsonschema/propertyName "indexing_threshold",
+                            :jsonschema/propertyName "memmap_threshold",
+                            :rdf/type :jsonschema/IntegerSchema}
+                           {:jsonschema/format "uint",
+                            :jsonschema/minimum 0,
+                            :jsonschema/propertyName "max_optimization_threads",
                             :rdf/type :jsonschema/IntegerSchema}],
    :jsonschema/required ["default_segment_number"
                          "deleted_threshold"
@@ -1266,7 +1266,27 @@
   {:db/ident :qdrant/OptimizersConfigDiff,
    :jsonschema/properties [{:jsonschema/format "uint",
                             :jsonschema/minimum 0,
+                            :jsonschema/propertyName "indexing_threshold",
+                            :rdf/type :jsonschema/IntegerSchema}
+                           {:jsonschema/format "uint",
+                            :jsonschema/minimum 100,
+                            :jsonschema/propertyName "vacuum_min_vector_number",
+                            :rdf/type :jsonschema/IntegerSchema}
+                           {:jsonschema/format "uint",
+                            :jsonschema/minimum 0,
+                            :jsonschema/propertyName "max_optimization_threads",
+                            :rdf/type :jsonschema/IntegerSchema}
+                           {:jsonschema/format "uint",
+                            :jsonschema/minimum 0,
                             :jsonschema/propertyName "default_segment_number",
+                            :rdf/type :jsonschema/IntegerSchema}
+                           {:jsonschema/format "uint",
+                            :jsonschema/minimum 0,
+                            :jsonschema/propertyName "max_segment_size",
+                            :rdf/type :jsonschema/IntegerSchema}
+                           {:jsonschema/format "uint",
+                            :jsonschema/minimum 0,
+                            :jsonschema/propertyName "memmap_threshold",
                             :rdf/type :jsonschema/IntegerSchema}
                            {:jsonschema/format "uint64",
                             :jsonschema/minimum 0,
@@ -1276,27 +1296,7 @@
                             :jsonschema/maximum 1,
                             :jsonschema/minimum 0,
                             :jsonschema/propertyName "deleted_threshold",
-                            :rdf/type           :jsonschema/NumberSchema}
-                           {:jsonschema/format "uint",
-                            :jsonschema/minimum 0,
-                            :jsonschema/propertyName "max_segment_size",
-                            :rdf/type :jsonschema/IntegerSchema}
-                           {:jsonschema/format "uint",
-                            :jsonschema/minimum 0,
-                            :jsonschema/propertyName "indexing_threshold",
-                            :rdf/type :jsonschema/IntegerSchema}
-                           {:jsonschema/format "uint",
-                            :jsonschema/minimum 0,
-                            :jsonschema/propertyName "memmap_threshold",
-                            :rdf/type :jsonschema/IntegerSchema}
-                           {:jsonschema/format "uint",
-                            :jsonschema/minimum 0,
-                            :jsonschema/propertyName "max_optimization_threads",
-                            :rdf/type :jsonschema/IntegerSchema}
-                           {:jsonschema/format "uint",
-                            :jsonschema/minimum 100,
-                            :jsonschema/propertyName "vacuum_min_vector_number",
-                            :rdf/type :jsonschema/IntegerSchema}],
+                            :rdf/type           :jsonschema/NumberSchema}],
    :jsonschema/required ["default_segment_number"
                          "deleted_threshold"
                          "flush_interval_sec"
@@ -2169,7 +2169,7 @@
                            {:jsonschema/anyOf [:qdrant/Filter
                                                :jsonschema/NullSchema],
                             :jsonschema/propertyName "filter",
-                            :rdf/type         :jsonschema/AnyOfSchema}],
+                            :rdf/type         :jsonschema/ObjectSchema}],
    :jsonschema/required ["payload"],
    :rdf/type :jsonschema/ObjectSchema})
 
@@ -2219,7 +2219,7 @@
                            {:jsonschema/anyOf [:qdrant/SnapshotPriority
                                                :jsonschema/NullSchema],
                             :jsonschema/propertyName "priority",
-                            :rdf/type         :jsonschema/AnyOfSchema}],
+                            :rdf/type         :jsonschema/ObjectSchema}],
    :jsonschema/required ["location"],
    :rdf/type :jsonschema/ObjectSchema})
 
@@ -2284,12 +2284,12 @@
      "Custom params for Optimizers.  If none - values from service configuration file are used. This operation is blocking, it will only proceed ones all current optimizations are complete",
      :jsonschema/anyOf [:qdrant/OptimizersConfigDiff :jsonschema/NullSchema],
      :jsonschema/propertyName "optimizers_config",
-     :rdf/type :jsonschema/AnyOfSchema}
+     :rdf/type :jsonschema/ObjectSchema}
     {:dcterms/description
      "Collection base params.  If none - values from service configuration file are used.",
      :jsonschema/anyOf [:qdrant/CollectionParamsDiff :jsonschema/NullSchema],
      :jsonschema/propertyName "params",
-     :rdf/type :jsonschema/AnyOfSchema}],
+     :rdf/type :jsonschema/ObjectSchema}],
    :rdf/type :jsonschema/ObjectSchema})
 
 (def UpdateResult
@@ -2324,7 +2324,7 @@
 (def UsingVector
   {:db/ident         :qdrant/UsingVector,
    :jsonschema/anyOf [:jsonschema/StringSchema],
-   :rdf/type         :jsonschema/AnyOfSchema})
+   :rdf/type         :jsonschema/ObjectSchema})
 
 (def ValueVariants
   {:db/ident         :qdrant/ValueVariants,
@@ -2332,7 +2332,7 @@
                       {:jsonschema/format "int64",
                        :rdf/type :jsonschema/IntegerSchema}
                       :jsonschema/BooleanSchema],
-   :rdf/type         :jsonschema/AnyOfSchema})
+   :rdf/type         :jsonschema/ObjectSchema})
 
 (def ValuesCount
   {:db/ident :qdrant/ValuesCount,
@@ -2374,7 +2374,7 @@
      "Vector specific quantization config that overrides collection config",
      :jsonschema/anyOf [:qdrant/QuantizationConfig :jsonschema/NullSchema],
      :jsonschema/propertyName "quantization_config",
-     :rdf/type :jsonschema/AnyOfSchema}],
+     :rdf/type :jsonschema/ObjectSchema}],
    :jsonschema/required ["distance" "index" "size" "storage_type"],
    :rdf/type :jsonschema/ObjectSchema})
 
