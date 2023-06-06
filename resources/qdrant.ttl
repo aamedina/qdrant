@@ -195,8 +195,8 @@ qdrant:AnyVariants a jsonschema:DataSchema ;
   jsonschema:anyOf [ 
     rdf:type jsonschema:ArraySchema ;
     jsonschema:items [ 
-      rdf:type "string" ;
-      ] , 
+      rdf:type jsonschema:StringSchema ;
+      ],
       [ 
       rdf:type jsonschema:ArraySchema ;
       jsonschema:items [
@@ -1444,8 +1444,7 @@ qdrant:Indexes a jsonschema:ObjectSchema ;
           ]
         [
           jsonschema:propertyName "options" ;
-          rdf:type jsonschema:ObjectSchema ;
-          jsonschema:ref qdrant:HnswConfig ;
+          rdf:type qdrant:HnswConfig ;
           ]
         )
       ]
@@ -2391,6 +2390,7 @@ qdrant:RecommendGroupsRequest a jsonschema:ObjectSchema ;
       jsonschema:propertyName "negative" ;
       dcterms:description "Try to avoid vectors like this" ;
       rdf:type jsonschema:ArraySchema ;
+      jsonschema:default "[]" ;
       jsonschema:items (
         qdrant:ExtendedPointId
         ) ;
@@ -2506,6 +2506,7 @@ qdrant:RecommendRequest a jsonschema:ObjectSchema ;
       jsonschema:propertyName "negative" ;
       dcterms:description "Try to avoid vectors like this" ;
       rdf:type jsonschema:ArraySchema ;
+      jsonschema:default "[]" ;
       jsonschema:items (
         qdrant:ExtendedPointId
         ) ;
