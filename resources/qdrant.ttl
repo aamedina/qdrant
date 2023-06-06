@@ -1099,6 +1099,24 @@ qdrant:ErrorResponse a jsonschema:ObjectSchema ;
     rdf:type jsonschema:ObjectSchema ;
     ] .
 
+qdrant:SuccessfulResponse a jsonschema:ObjectSchema ;
+  dcterms:description "Successful operation" ;
+  jsonschema:properties [
+    jsonschema:propertyName "time" ;
+    dcterms:description "Time spent to process this request" ;
+    rdf:type jsonschema:NumberSchema ;
+    jsonschema:format "float" ;
+    ],
+    [ 
+    jsonschema:propertyName "status" ;
+    rdf:type jsonschema:StringSchema ;
+    jsonschema:enum ( "ok" ) ;
+    ], 
+    [ 
+    jsonschema:propertyName "result" ;
+    rdf:type jsonschema:ObjectSchema ;
+    ] .
+
 # ExtendedPointId
 # {"description" "Type, used for specifying point ID in user interface", "anyOf" [{"type" "integer", "format" "uint64", "minimum" 0} {"type" "string", "format" "uuid"}]}
 
@@ -1243,7 +1261,7 @@ qdrant:GeoRadius a jsonschema:ObjectSchema ;
 # GroupId
 # {"anyOf" [{"type" "string"} {"type" "integer", "format" "uint64", "minimum" 0} {"type" "integer", "format" "int64"}]}
 
-qdrant:GroupId a jsonschema:ObjectSchema ;
+qdrant:GroupId a jsonschema:DataSchema ;
   jsonschema:anyOf [
     rdf:type jsonschema:StringSchema ;
     ],
@@ -1541,7 +1559,7 @@ qdrant:LookupLocation a jsonschema:ObjectSchema ;
 # Match
 # {"description" "Match filter request", "anyOf" [{"$ref" "#/components/schemas/MatchValue"} {"$ref" "#/components/schemas/MatchText"} {"$ref" "#/components/schemas/MatchAny"} {"$ref" "#/components/schemas/MatchExcept"}]}
 
-qdrant:Match a jsonschema:ObjectSchema ;
+qdrant:Match a jsonschema:DataSchema ;
   dcterms:description "Match filter request" ;
   jsonschema:anyOf (qdrant:MatchValue qdrant:MatchText qdrant:MatchAny qdrant:MatchExcept) .
 
@@ -1656,7 +1674,7 @@ qdrant:NamedVector a jsonschema:ObjectSchema ;
 # NamedVectorStruct
 # {"description" "Vector data separator for named and unnamed modes Unanmed mode:\n\n{ \"vector\": [1.0, 2.0, 3.0] }\n\nor named mode:\n\n{ \"vector\": { \"vector\": [1.0, 2.0, 3.0], \"name\": \"image-embeddings\" } }", "anyOf" [{"type" "array", "items" {"type" "number", "format" "float"}} {"$ref" "#/components/schemas/NamedVector"}]}
 
-qdrant:NamedVectorStruct a jsonschema:ObjectSchema ;
+qdrant:NamedVectorStruct a jsonschema:DataSchema ;
   jsonschema:anyOf ([
       jsonschema:type jsonschema:ArraySchema ;
       jsonschema:items [
@@ -1905,7 +1923,7 @@ qdrant:PayloadField a jsonschema:ObjectSchema ;
 # PayloadFieldSchema
 # {"anyOf" [{"$ref" "#/components/schemas/PayloadSchemaType"} {"$ref" "#/components/schemas/PayloadSchemaParams"}]}
 
-qdrant:PayloadFieldSchema a jsonschema:ObjectSchema ;
+qdrant:PayloadFieldSchema a jsonschema:DataSchema ;
   jsonschema:anyOf (
     qdrant:PayloadSchemaType 
     qdrant:PayloadSchemaParams
@@ -1967,7 +1985,7 @@ qdrant:PayloadIndexTelemetry a jsonschema:ObjectSchema ;
 # PayloadSchemaParams
 # {"description" "Payload type with parameters", "anyOf" [{"$ref" "#/components/schemas/TextIndexParams"}]}
 
-qdrant:PayloadSchemaParams a jsonschema:ObjectSchema ;
+qdrant:PayloadSchemaParams a jsonschema:DataSchema ;
   dcterms:description "Payload type with parameters" ;
   jsonschema:anyOf (
     qdrant:TextIndexParams
@@ -1983,7 +2001,7 @@ qdrant:PayloadSchemaType a jsonschema:StringSchema ;
 # PayloadSelector
 # {"description" "Specifies how to treat payload selector", "anyOf" [{"$ref" "#/components/schemas/PayloadSelectorInclude"} {"$ref" "#/components/schemas/PayloadSelectorExclude"}]}
 
-qdrant:PayloadSelector a jsonschema:ObjectSchema ;
+qdrant:PayloadSelector a jsonschema:DataSchema ;
   dcterms:description "Specifies how to treat payload selector" ;
   jsonschema:anyOf (
     qdrant:PayloadSelectorInclude 
@@ -2161,7 +2179,7 @@ qdrant:PointsList a jsonschema:ObjectSchema ;
 # PointsSelector
 # {"anyOf" [{"$ref" "#/components/schemas/PointIdsList"} {"$ref" "#/components/schemas/FilterSelector"}]}
 
-qdrant:PointsSelector a jsonschema:ObjectSchema ;
+qdrant:PointsSelector a jsonschema:DataSchema ;
   jsonschema:anyOf (
     qdrant:PointIdsList
     qdrant:FilterSelector
@@ -2194,7 +2212,7 @@ qdrant:ProductQuantizationConfig a jsonschema:ObjectSchema ;
 # QuantizationConfig
 # {"anyOf" [{"$ref" "#/components/schemas/ScalarQuantization"} {"$ref" "#/components/schemas/ProductQuantization"}]}
 
-qdrant:QuantizationConfig a jsonschema:ObjectSchema ;
+qdrant:QuantizationConfig a jsonschema:DataSchema ;
   jsonschema:anyOf (
     qdrant:ScalarQuantization
     qdrant:ProductQuantization
@@ -3521,7 +3539,7 @@ qdrant:UpdateVectors a jsonschema:ObjectSchema ;
 # UsingVector
 # {"anyOf" [{"type" "string"}]}
 
-qdrant:UsingVector a jsonschema:ObjectSchema ;
+qdrant:UsingVector a jsonschema:DataSchema ;
   jsonschema:anyOf (
     jsonschema:StringSchema
     ) .
@@ -3529,7 +3547,7 @@ qdrant:UsingVector a jsonschema:ObjectSchema ;
 # ValueVariants
 # {"anyOf" [{"type" "string"} {"type" "integer", "format" "int64"} {"type" "boolean"}]}
 
-qdrant:ValueVariants a jsonschema:ObjectSchema ;
+qdrant:ValueVariants a jsonschema:DataSchema ;
   jsonschema:anyOf (
     jsonschema:StringSchema
     [ rdf:type jsonschema:IntegerSchema ;
@@ -3730,7 +3748,7 @@ qdrant:VectorStorageType a jsonschema:StringSchema ;
 # VectorStruct
 # {"description" "Full vector data per point separator with single and multiple vector modes", "anyOf" [{"type" "array", "items" {"type" "number", "format" "float"}} {"type" "object", "additionalProperties" {"type" "array", "items" {"type" "number", "format" "float"}}}]}
 
-qdrant:VectorStruct a jsonschema:ObjectSchema ;
+qdrant:VectorStruct a jsonschema:DataSchema ;
   dcterms:description "Full vector data per point separator with single and multiple vector modes" ;
   jsonschema:anyOf (
     [
@@ -3761,7 +3779,7 @@ qdrant:VectorStruct a jsonschema:ObjectSchema ;
 # VectorsConfig
 # {"description" "Vector params separator for single and multiple vector modes Single mode:\n\n{ \"size\": 128, \"distance\": \"Cosine\" }\n\nor multiple mode:\n\n{ \"default\": { \"size\": 128, \"distance\": \"Cosine\" } }", "anyOf" [{"$ref" "#/components/schemas/VectorParams"} {"type" "object", "additionalProperties" {"$ref" "#/components/schemas/VectorParams"}}]}
 
-qdrant:VectorsConfig a jsonschema:ObjectSchema ;
+qdrant:VectorsConfig a jsonschema:DataSchema ;
   dcterms:description "Vector params separator for single and multiple vector modes Single mode:\n\n{ \"size\": 128, \"distance\": \"Cosine\" }\n\nor multiple mode:\n\n{ \"default\": { \"size\": 128, \"distance\": \"Cosine\" } }" ;
   jsonschema:anyOf (
     [
@@ -3842,7 +3860,7 @@ qdrant:WebApiTelemetry a jsonschema:ObjectSchema ;
 # WithPayloadInterface
 # {"description" "Options for specifying which payload to include or not", "anyOf" [{"description" "If `true` - return all payload, If `false` - do not return payload", "type" "boolean"} {"description" "Specify which fields to return", "type" "array", "items" {"type" "string"}} {"$ref" "#/components/schemas/PayloadSelector"}]}
 
-qdrant:WithPayloadInterface a jsonschema:ObjectSchema ;
+qdrant:WithPayloadInterface a jsonschema:DataSchema ;
   dcterms:description "Options for specifying which payload to include or not" ;
   jsonschema:anyOf (
     [
@@ -3866,7 +3884,7 @@ qdrant:WithPayloadInterface a jsonschema:ObjectSchema ;
 # WithVector
 # {"description" "Options for specifying which vector to include", "anyOf" [{"description" "If `true` - return all vector, If `false` - do not return vector", "type" "boolean"} {"description" "Specify which vector to return", "type" "array", "items" {"type" "string"}}]}
 
-qdrant:WithVector a jsonschema:ObjectSchema ;
+qdrant:WithVector a jsonschema:DataSchema ;
   dcterms:description "Options for specifying which vector to include" ;
   jsonschema:anyOf (
     [
