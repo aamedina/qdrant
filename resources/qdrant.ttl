@@ -220,6 +220,7 @@ qdrant:AppBuildTelemetry a jsonschema:ObjectSchema ;
     rdf:type jsonschema:StringSchema ;
     ], 
     [ 
+    rdf:type jsonschema:ObjectSchema ;
     jsonschema:propertyName "features" ;
     jsonschema:anyOf (
       qdrant:AppFeaturesTelemetry
@@ -227,6 +228,7 @@ qdrant:AppBuildTelemetry a jsonschema:ObjectSchema ;
       ) ;
     ], 
     [ 
+    rdf:type jsonschema:ObjectSchema ;
     jsonschema:propertyName "system" ;
     jsonschema:anyOf (
       qdrant:RunningEnvironmentTelemetry
@@ -276,6 +278,7 @@ qdrant:Batch a jsonschema:ObjectSchema ;
     jsonschema:propertyName "payloads" ;
     rdf:type jsonschema:ArraySchema ;
     jsonschema:items [
+      rdf:type jsonschema:ObjectSchema ;
       jsonschema:anyOf (
         qdrant:Payload
         jsonschema:NullSchema
@@ -846,6 +849,7 @@ qdrant:ConsensusThreadStatus a jsonschema:DataSchema ;
 qdrant:CountRequest a jsonschema:ObjectSchema ;
   dcterms:description "Count Request Counts the number of points which satisfy the given filter. If filter is not provided, the count of all points in the collection will be returned." ;
   jsonschema:properties [
+    rdf:type jsonschema:ObjectSchema ;
     jsonschema:propertyName "filter" ;
     dcterms:description "Look only for points which satisfies this conditions" ;
     jsonschema:anyOf ( qdrant:Filter jsonschema:NullSchema ) ;
@@ -1937,6 +1941,7 @@ qdrant:PayloadIndexInfo a jsonschema:ObjectSchema ;
     rdf:type qdrant:PayloadSchemaType ;
     ] ,
     [
+    rdf:type jsonschema:DataSchema ;
     jsonschema:propertyName "params" ;
     jsonschema:anyOf (
       qdrant:PayloadSchemaParams 
@@ -2104,6 +2109,7 @@ qdrant:PointRequest a jsonschema:ObjectSchema ;
     jsonschema:items qdrant:ExtendedPointId ;
     ] ,
     [
+    rdf:type jsonschema:DataSchema ;
     jsonschema:propertyName "with_payload" ;
     dcterms:description "Select which payload to return with the response. Default: All" ;
     jsonschema:anyOf (
@@ -2130,6 +2136,7 @@ qdrant:PointStruct a jsonschema:ObjectSchema ;
     rdf:type qdrant:VectorStruct ;
     ] ,
     [
+    rdf:type jsonschema:DataSchema ;
     jsonschema:propertyName "payload" ;
     dcterms:description "Payload values (optional)" ;
     jsonschema:anyOf (
@@ -2265,6 +2272,7 @@ qdrant:RaftInfo a jsonschema:ObjectSchema ;
     rdf:type jsonschema:IntegerSchema ;
     ] ,
     [
+    rdf:type jsonschema:ObjectSchema ;
     jsonschema:propertyName "role" ;
     dcterms:description "Role of this peer in the current term" ;
     jsonschema:anyOf (
@@ -2382,7 +2390,6 @@ qdrant:RecommendGroupsRequest a jsonschema:ObjectSchema ;
     [
       jsonschema:propertyName "negative" ;
       dcterms:description "Try to avoid vectors like this" ;
-      jsonschema:default "[]" ;
       rdf:type jsonschema:ArraySchema ;
       jsonschema:items (
         qdrant:ExtendedPointId
@@ -2455,7 +2462,6 @@ qdrant:RecommendRequest a jsonschema:ObjectSchema ;
     [
       jsonschema:propertyName "using" ;
       dcterms:description "Define which vector to use for recommendation, if not specified - try to use default vector" ;
-      jsonschema:default "null" ;
       rdf:type jsonschema:ObjectSchema ;
       jsonschema:anyOf (
         qdrant:UsingVector
@@ -2490,7 +2496,6 @@ qdrant:RecommendRequest a jsonschema:ObjectSchema ;
     [
       jsonschema:propertyName "lookup_from" ;
       dcterms:description "The location used to lookup vectors. If not specified - use current collection. Note: the other collection should have the same vector size as the current collection" ;
-      jsonschema:default "null" ;
       rdf:type jsonschema:ObjectSchema ;
       jsonschema:anyOf (
         qdrant:LookupLocation
@@ -2500,7 +2505,6 @@ qdrant:RecommendRequest a jsonschema:ObjectSchema ;
     [
       jsonschema:propertyName "negative" ;
       dcterms:description "Try to avoid vectors like this" ;
-      jsonschema:default "[]" ;
       rdf:type jsonschema:ArraySchema ;
       jsonschema:items (
         qdrant:ExtendedPointId
@@ -2516,7 +2520,6 @@ qdrant:RecommendRequest a jsonschema:ObjectSchema ;
     [
       jsonschema:propertyName "with_payload" ;
       dcterms:description "Select which payload to return with the response. Default: None" ;
-      jsonschema:default "null" ;
       rdf:type jsonschema:ObjectSchema ;
       jsonschema:anyOf (
         qdrant:WithPayloadInterface
@@ -2526,7 +2529,6 @@ qdrant:RecommendRequest a jsonschema:ObjectSchema ;
     [
       jsonschema:propertyName "filter" ;
       dcterms:description "Look only for points which satisfies this conditions" ;
-      jsonschema:default "null" ;
       rdf:type jsonschema:ObjectSchema ;
       jsonschema:anyOf (
         qdrant:Filter
@@ -2538,14 +2540,10 @@ qdrant:RecommendRequest a jsonschema:ObjectSchema ;
       dcterms:description "Define a minimal score threshold for the result. If defined, less similar results will not be returned. Score of the returned result might be higher or smaller than the threshold depending on the Distance function used. E.g. for cosine similarity only higher scores will be returned." ;
       rdf:type jsonschema:NumberSchema ;
       jsonschema:format "float" ;
-      jsonschema:minimum 0 ;
-      jsonschema:exclusiveMinimum true ;
-      jsonschema:default "null" ;
       ] 
     [
       jsonschema:propertyName "with_vector" ;
       dcterms:description "Whether to return the point vector with the result?" ;
-      jsonschema:default "null" ;
       rdf:type jsonschema:ObjectSchema ;
       jsonschema:anyOf (
         qdrant:WithVector
