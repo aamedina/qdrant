@@ -1214,12 +1214,12 @@ qdrant:GeoBoundingBox a jsonschema:ObjectSchema ;
   jsonschema:required ( "bottom_right" "top_left" ) ;
   jsonschema:properties [
     jsonschema:propertyName "top_left" ;
-    jsonschema:description "Geo point payload schema" ;
+    dcterms:description "Geo point payload schema" ;
     rdf:type qdrant:GeoPoint ;
     ], 
     [ 
     jsonschema:propertyName "bottom_right" ;
-    jsonschema:description "Geo point payload schema" ;
+    dcterms:description "Geo point payload schema" ;
     rdf:type qdrant:GeoPoint ;
     ] .
 
@@ -1246,12 +1246,12 @@ qdrant:GeoRadius a jsonschema:ObjectSchema ;
   jsonschema:required ( "center" "radius" ) ;
   jsonschema:properties [
     jsonschema:propertyName "center" ;
-    jsonschema:description "Geo point payload schema" ;
+    dcterms:description "Geo point payload schema" ;
     rdf:type qdrant:GeoPoint ;
     ], 
     [ 
     jsonschema:propertyName "radius" ;
-    jsonschema:description "Radius of the area in meters" ;
+    dcterms:description "Radius of the area in meters" ;
     rdf:type jsonschema:NumberSchema ;
     ] .
 
@@ -1315,28 +1315,28 @@ qdrant:HnswConfig a jsonschema:ObjectSchema ;
   jsonschema:required ( "ef_construct" "full_scan_threshold" "m" ) ;
   jsonschema:properties [
     jsonschema:propertyName "m" ;
-    jsonschema:description "Number of edges per node in the index graph. Larger the value - more accurate the search, more space required." ;
+    dcterms:description "Number of edges per node in the index graph. Larger the value - more accurate the search, more space required." ;
     rdf:type jsonschema:IntegerSchema ;
     jsonschema:format "uint" ;
     jsonschema:minimum 0 ;
     ], 
     [ 
     jsonschema:propertyName "ef_construct" ;
-    jsonschema:description "Number of neighbours to consider during the index building. Larger the value - more accurate the search, more time required to build index." ;
+    dcterms:description "Number of neighbours to consider during the index building. Larger the value - more accurate the search, more time required to build index." ;
     rdf:type jsonschema:IntegerSchema ;
     jsonschema:format "uint" ;
     jsonschema:minimum 4 ;
     ], 
     [ 
     jsonschema:propertyName "full_scan_threshold" ;
-    jsonschema:description "Minimal size (in KiloBytes) of vectors for additional payload-based indexing. If payload chunk is smaller than `full_scan_threshold_kb` additional indexing won't be used - in this case full-scan search should be preferred by query planner and additional indexing is not required. Note: 1Kb = 1 vector of size 256" ;
+    dcterms:description "Minimal size (in KiloBytes) of vectors for additional payload-based indexing. If payload chunk is smaller than `full_scan_threshold_kb` additional indexing won't be used - in this case full-scan search should be preferred by query planner and additional indexing is not required. Note: 1Kb = 1 vector of size 256" ;
     rdf:type jsonschema:IntegerSchema ;
     jsonschema:format "uint" ;
     jsonschema:minimum 0 ;
     ], 
     [ 
     jsonschema:propertyName "max_indexing_threads" ;
-    jsonschema:description "Number of parallel threads used for background index building. If 0 - auto selection." ;
+    dcterms:description "Number of parallel threads used for background index building. If 0 - auto selection." ;
     jsonschema:default 0 ;
     rdf:type jsonschema:IntegerSchema ;
     jsonschema:format "uint" ;
@@ -1344,12 +1344,12 @@ qdrant:HnswConfig a jsonschema:ObjectSchema ;
     ], 
     [ 
     jsonschema:propertyName "on_disk" ;
-    jsonschema:description "Store HNSW index on disk. If set to false, index will be stored in RAM. Default: false" ;
+    dcterms:description "Store HNSW index on disk. If set to false, index will be stored in RAM. Default: false" ;
     rdf:type jsonschema:BooleanSchema ;
     ], 
     [ 
     jsonschema:propertyName "payload_m" ;
-    jsonschema:description "Custom M param for hnsw graph built for payload index . If not set, default M will be used." ; 
+    dcterms:description "Custom M param for hnsw graph built for payload index . If not set, default M will be used." ; 
     rdf:type jsonschema:IntegerSchema ;
     jsonschema:format "uint" ;
     jsonschema:minimum 0 ;
@@ -1657,13 +1657,13 @@ qdrant:NamedVector a jsonschema:ObjectSchema ;
   jsonschema:required ("name" "vector") ;
   jsonschema:properties [
     jsonschema:propertyName "name" ;
-    jsonschema:type jsonschema:StringSchema ;
+    rdf:type jsonschema:StringSchema ;
     ] ,
     [
     jsonschema:propertyName "vector" ;
-    jsonschema:type jsonschema:ArraySchema ;
+    rdf:type jsonschema:ArraySchema ;
     jsonschema:items [
-      jsonschema:type jsonschema:NumberSchema ;
+      rdf:type jsonschema:NumberSchema ;
       jsonschema:format "float" ;
       ] ;
     ] .
@@ -1673,9 +1673,9 @@ qdrant:NamedVector a jsonschema:ObjectSchema ;
 
 qdrant:NamedVectorStruct a jsonschema:DataSchema ;
   jsonschema:anyOf ([
-      jsonschema:type jsonschema:ArraySchema ;
+      rdf:type jsonschema:ArraySchema ;
       jsonschema:items [
-        jsonschema:type jsonschema:NumberSchema ;
+        rdf:type jsonschema:NumberSchema ;
         jsonschema:format "float" ;
         ] ;
       ] 
@@ -1688,11 +1688,11 @@ qdrant:Nested a jsonschema:ObjectSchema ;
   jsonschema:required ("filter" "key") ;
   jsonschema:properties [
     jsonschema:propertyName "key" ;
-    jsonschema:type jsonschema:StringSchema ;
+    rdf:type jsonschema:StringSchema ;
     ] ,
     [
     jsonschema:propertyName "filter" ;
-    jsonschema:type qdrant:Filter ;
+    rdf:type qdrant:Filter ;
     ] .
 
 # NestedCondition
