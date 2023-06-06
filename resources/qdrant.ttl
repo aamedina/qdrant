@@ -598,8 +598,7 @@ qdrant:CollectionInfo a jsonschema:ObjectSchema ;
     [ 
     jsonschema:propertyName "payload_schema" ;
     dcterms:description "Types of stored payload" ;
-    rdf:type jsonschema:ObjectSchema ;
-    jsonschema:additionalProperties qdrant:PayloadIndexInfo ;
+    rdf:type qdrant:PayloadIndexInfo ;
     ] .
 
 # CollectionParams
@@ -3133,8 +3132,7 @@ qdrant:SegmentConfig a jsonschema:ObjectSchema ;
   jsonschema:properties (
     [
       jsonschema:propertyName "vector_data" ;
-      rdf:type jsonschema:ObjectSchema ;
-      jsonschema:additionalProperties qdrant:VectorDataConfig ;
+      rdf:type qdrant:VectorDataConfig ;
       ]
     [
       jsonschema:propertyName "payload_storage_type" ;
@@ -3197,8 +3195,7 @@ qdrant:SegmentInfo a jsonschema:ObjectSchema ;
       ]
     [
       jsonschema:propertyName "index_schema" ;
-      rdf:type jsonschema:ObjectSchema ;
-      jsonschema:additionalProperties qdrant:PayloadIndexInfo ;
+      rdf:type qdrant:PayloadIndexInfo ;
       ]
     ) .
 
