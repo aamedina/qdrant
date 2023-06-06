@@ -158,10 +158,10 @@ qdrant: a owl:Ontology ;
 
 qdrant:AbortTransferOperation a jsonschema:ObjectSchema ;
   jsonschema:required ( "abort_transfer" ) ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "abort_transfer" ;
     rdf:type qdrant:MoveShard ;
-    ] .
+    ]) .
 
 # AliasDescription
 # {"type" "object", "required" ["alias_name" "collection_name"], "properties" {"alias_name" {"type" "string"}, "collection_name" {"type" "string"}}}
@@ -298,10 +298,8 @@ qdrant:BatchVectorStruct a jsonschema:DataSchema ;
       ] ;
     ] , 
     [
-    jsonschema:propertyName "additionalProperties" ;
     rdf:type jsonschema:ObjectSchema ;
     jsonschema:properties [
-      jsonschema:propertyName "type" ;
       rdf:type jsonschema:ArraySchema ;
       jsonschema:items [ 
         rdf:type jsonschema:ArraySchema ;
@@ -319,11 +317,11 @@ qdrant:BatchVectorStruct a jsonschema:DataSchema ;
 qdrant:ChangeAliasesOperation a jsonschema:ObjectSchema ;
   dcterms:description "Operation for performing changes of collection aliases. Alias changes are atomic, meaning that no collection modifications can happen between alias operations." ;
   jsonschema:required ( "actions" ) ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "actions" ;
     rdf:type jsonschema:ArraySchema ;
     jsonschema:items qdrant:AliasOperations ;
-    ] .
+    ]) .
 
 # ClusterConfigTelemetry
 # {"type" "object", "required" ["consensus" "grpc_timeout_ms" "p2p"], "properties" {"grpc_timeout_ms" {"type" "integer", "format" "uint64", "minimum" 0}, "p2p" {"$ref" "#/components/schemas/P2pConfigTelemetry"}, "consensus" {"$ref" "#/components/schemas/ConsensusConfigTelemetry"}}}
@@ -546,10 +544,10 @@ qdrant:CollectionConfig a jsonschema:ObjectSchema ;
 
 qdrant:CollectionDescription a jsonschema:ObjectSchema ;
   jsonschema:required ( "name" ) ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "name" ;
     rdf:type jsonschema:StringSchema ;
-    ] .
+    ]) .
 
 # CollectionInfo
 # {"description" "Current statistics and configuration of the collection", "type" "object", "required" ["config" "indexed_vectors_count" "optimizer_status" "payload_schema" "points_count" "segments_count" "status" "vectors_count"], "properties" {"status" {"$ref" "#/components/schemas/CollectionStatus"}, "optimizer_status" {"$ref" "#/components/schemas/OptimizersStatus"}, "vectors_count" {"description" "Number of vectors in collection All vectors in collection are available for querying Calculated as `points_count x vectors_per_point` Where `vectors_per_point` is a number of named vectors in schema", "type" "integer", "format" "uint", "minimum" 0}, "indexed_vectors_count" {"description" "Number of indexed vectors in the collection. Indexed vectors in large segments are faster to query, as it is stored in vector index (HNSW)", "type" "integer", "format" "uint", "minimum" 0}, "points_count" {"description" "Number of points (vectors + payloads) in collection Each point could be accessed by unique id", "type" "integer", "format" "uint", "minimum" 0}, "segments_count" {"description" "Number of segments in collection. Each segment has independent vector as payload indexes", "type" "integer", "format" "uint", "minimum" 0}, "config" {"$ref" "#/components/schemas/CollectionConfig"}, "payload_schema" {"description" "Types of stored payload", "type" "object", "additionalProperties" {"$ref" "#/components/schemas/PayloadIndexInfo"}}}}
@@ -731,22 +729,22 @@ qdrant:CollectionsAggregatedTelemetry a jsonschema:ObjectSchema ;
 
 qdrant:CollectionsAliasesResponse a jsonschema:ObjectSchema ;
   jsonschema:required ( "aliases" ) ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "aliases" ;
     rdf:type jsonschema:ArraySchema ;
     jsonschema:items qdrant:AliasDescription ;
-    ] .
+    ]) .
 
 # CollectionsResponse
 # {"type" "object", "required" ["collections"], "properties" {"collections" {"type" "array", "items" {"$ref" "#/components/schemas/CollectionDescription"}}}}
 
 qdrant:CollectionsResponse a jsonschema:ObjectSchema ;
   jsonschema:required ( "collections" ) ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "collections" ;
     rdf:type jsonschema:ArraySchema ;
     jsonschema:items qdrant:CollectionDescription ;
-    ] .
+    ]) .
 
 # CollectionsTelemetry
 # {"type" "object", "required" ["number_of_collections"], "properties" {"number_of_collections" {"type" "integer", "format" "uint", "minimum" 0}, "collections" {"type" "array", "items" {"$ref" "#/components/schemas/CollectionTelemetryEnum"}, "nullable" true}}}
@@ -865,13 +863,13 @@ qdrant:CountRequest a jsonschema:ObjectSchema ;
 
 qdrant:CountResult a jsonschema:ObjectSchema ;
   jsonschema:required ( "count" ) ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "count" ;
     dcterms:description "Number of points which satisfy the conditions" ;
     rdf:type jsonschema:IntegerSchema ;
     jsonschema:format "uint" ;
     jsonschema:minimum 0 ;
-    ] .
+    ]) .
 
 # CreateAlias
 # {"description" "Create alternative name for a collection. Collection will be available under both names for search, retrieve,", "type" "object", "required" ["alias_name" "collection_name"], "properties" {"collection_name" {"type" "string"}, "alias_name" {"type" "string"}}}
@@ -893,10 +891,10 @@ qdrant:CreateAlias a jsonschema:ObjectSchema ;
 
 qdrant:CreateAliasOperation a jsonschema:ObjectSchema ;
   jsonschema:required ( "create_alias" ) ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "create_alias" ;
     rdf:type qdrant:CreateAlias ;
-    ] .
+    ]) .
 
 # CreateCollection
 # {"description" "Operation for creating new collection and (optionally) specifyn index params", "type" "object", "required" ["vectors"], "properties" {"vectors" {"$ref" "#/components/schemas/VectorsConfig"}, "wal_config" {"description" "Custom params for WAL. If none - values from service configuration file are used.", "anyOf" [{"$ref" "#/components/schemas/WalConfigDiff"} {"nullable" true}]}, "init_from" {"description" "Specify other collection to copy data from.", "default" nil, "anyOf" [{"$ref" "#/components/schemas/InitFrom"} {"nullable" true}]}, "quantization_config" {"description" "Quantization parameters. If none - quantization is disabled.", "default" nil, "anyOf" [{"$ref" "#/components/schemas/QuantizationConfig"} {"nullable" true}]}, "replication_factor" {"description" "Number of shards replicas. Default is 1 Minimum is 1", "default" nil, "type" "integer", "format" "uint32", "minimum" 0, "nullable" true}, "optimizers_config" {"description" "Custom params for Optimizers.  If none - values from service configuration file are used.", "anyOf" [{"$ref" "#/components/schemas/OptimizersConfigDiff"} {"nullable" true}]}, "write_consistency_factor" {"description" "Defines how many replicas should apply the operation for us to consider it successful. Increasing this number will make the collection more resilient to inconsistencies, but will also make it fail if not enough replicas are available. Does not have any performance impact.", "default" nil, "type" "integer", "format" "uint32", "minimum" 0, "nullable" true}, "shard_number" {"description" "Number of shards in collection. Default is 1 for standalone, otherwise equal to the number of nodes Minimum is 1", "default" nil, "type" "integer", "format" "uint32", "minimum" 0, "nullable" true}, "hnsw_config" {"description" "Custom params for HNSW index. If none - values from service configuration file are used.", "anyOf" [{"$ref" "#/components/schemas/HnswConfigDiff"} {"nullable" true}]}, "on_disk_payload" {"description" "If true - point's payload will not be stored in memory. It will be read from the disk every time it is requested. This setting saves RAM by (slightly) increasing the response time. Note: those payload values that are involved in filtering and are indexed - remain in RAM.", "default" nil, "type" "boolean", "nullable" true}}}
@@ -988,10 +986,10 @@ qdrant:CreateFieldIndex a jsonschema:ObjectSchema ;
 qdrant:DeleteAlias a jsonschema:ObjectSchema ;
   dcterms:description "Delete alias if exists" ;
   jsonschema:required ( "alias_name" ) ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "alias_name" ;
     rdf:type jsonschema:StringSchema ;
-    ] .
+    ]) .
 
 # DeleteAliasOperation
 # {"description" "Delete alias if exists", "type" "object", "required" ["delete_alias"], "properties" {"delete_alias" {"$ref" "#/components/schemas/DeleteAlias"}}}
@@ -999,10 +997,10 @@ qdrant:DeleteAlias a jsonschema:ObjectSchema ;
 qdrant:DeleteAliasOperation a jsonschema:ObjectSchema ;
   dcterms:description "Delete alias if exists" ;
   jsonschema:required ( "delete_alias" ) ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "delete_alias" ;
     rdf:type qdrant:DeleteAlias ;
-    ] .
+    ]) .
 
 # DeletePayload
 # {"type" "object", "required" ["keys"], "properties" {"keys" {"description" "List of payload keys to remove from payload", "type" "array", "items" {"type" "string"}}, "points" {"description" "Deletes values from each point in this list", "type" "array", "items" {"$ref" "#/components/schemas/ExtendedPointId"}, "nullable" true}, "filter" {"description" "Deletes values from points that satisfy this filter condition", "anyOf" [{"$ref" "#/components/schemas/Filter"} {"nullable" true}]}}}
@@ -1069,10 +1067,10 @@ qdrant:Distance a jsonschema:StringSchema ;
 qdrant:DropReplicaOperation a jsonschema:ObjectSchema ;
   dcterms:description "Drop replica operation" ;
   jsonschema:required ( "drop_replica" ) ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "drop_replica" ;
     rdf:type qdrant:Replica ;
-    ] .
+    ]) .
 
 # ErrorResponse
 # {"type" "object", "properties" {"time" {"type" "number", "format" "float", "description" "Time spent to process this request"}, "status" {"type" "object", "properties" {"error" {"type" "string", "description" "Description of the occurred error."}}}, "result" {"type" "object", "nullable" true}}}
@@ -1204,10 +1202,10 @@ qdrant:Filter a jsonschema:ObjectSchema ;
 
 qdrant:FilterSelector a jsonschema:ObjectSchema ;
   jsonschema:required ( "filter" ) ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "filter" ;
     rdf:type qdrant:Filter ;
-    ] .
+    ]) .
 
 # GeoBoundingBox
 # {"description" "Geo filter request\n\nMatches coordinates inside the rectangle, described by coordinates of lop-left and bottom-right edges", "type" "object", "required" ["bottom_right" "top_left"], "properties" {"top_left" {"$ref" "#/components/schemas/GeoPoint"}, "bottom_right" {"$ref" "#/components/schemas/GeoPoint"}}}
@@ -1280,22 +1278,22 @@ qdrant:GroupId a jsonschema:DataSchema ;
 
 qdrant:GroupsResult a jsonschema:ObjectSchema ;
   jsonschema:required ( "groups" ) ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "groups" ;
     rdf:type jsonschema:ArraySchema ;
     jsonschema:items qdrant:PointGroup ;
-    ] .
+    ]) .
 
 # GrpcTelemetry
 # {"type" "object", "required" ["responses"], "properties" {"responses" {"type" "object", "additionalProperties" {"$ref" "#/components/schemas/OperationDurationStatistics"}}}}
 
 qdrant:GrpcTelemetry a jsonschema:ObjectSchema ;
   jsonschema:required ( "responses" ) ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "responses" ;
     rdf:type jsonschema:ObjectSchema ;
-    jsonschema:additionalProperties qdrant:OperationDurationStatistics ;
-    ] .
+    jsonschema:properties qdrant:OperationDurationStatistics ;
+    ]) .
 
 # HasIdCondition
 # {"description" "ID-based filtering condition", "type" "object", "required" ["has_id"], "properties" {"has_id" {"type" "array", "items" {"$ref" "#/components/schemas/ExtendedPointId"}, "uniqueItems" true}}}
@@ -1303,12 +1301,12 @@ qdrant:GrpcTelemetry a jsonschema:ObjectSchema ;
 qdrant:HasIdCondition a jsonschema:ObjectSchema ;
   dcterms:description "ID-based filtering condition" ;
   jsonschema:required ( "has_id" ) ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "has_id" ;
     rdf:type jsonschema:ArraySchema ;
     jsonschema:items qdrant:ExtendedPointId ;
     jsonschema:uniqueItems true ;
-    ] .
+    ]) .
 
 # HnswConfig
 # {"description" "Config of HNSW index", "type" "object", "required" ["ef_construct" "full_scan_threshold" "m"], "properties" {"m" {"description" "Number of edges per node in the index graph. Larger the value - more accurate the search, more space required.", "type" "integer", "format" "uint", "minimum" 0}, "ef_construct" {"description" "Number of neighbours to consider during the index building. Larger the value - more accurate the search, more time required to build index.", "type" "integer", "format" "uint", "minimum" 4}, "full_scan_threshold" {"description" "Minimal size (in KiloBytes) of vectors for additional payload-based indexing. If payload chunk is smaller than `full_scan_threshold_kb` additional indexing won't be used - in this case full-scan search should be preferred by query planner and additional indexing is not required. Note: 1Kb = 1 vector of size 256", "type" "integer", "format" "uint", "minimum" 0}, "max_indexing_threads" {"description" "Number of parallel threads used for background index building. If 0 - auto selection.", "default" 0, "type" "integer", "format" "uint", "minimum" 0}, "on_disk" {"description" "Store HNSW index on disk. If set to false, index will be stored in RAM. Default: false", "type" "boolean", "nullable" true}, "payload_m" {"description" "Custom M param for hnsw graph built for payload index. If not set, default M will be used.", "type" "integer", "format" "uint", "minimum" 0, "nullable" true}}}
@@ -1456,10 +1454,10 @@ qdrant:Indexes a jsonschema:ObjectSchema ;
 qdrant:InitFrom a jsonschema:ObjectSchema ;
   dcterms:description "Operation for creating new collection and (optionally) specify index params" ;
   jsonschema:required "collection" ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "collection" ;
     rdf:type jsonschema:StringSchema ;
-    ] .
+    ]) .
 
 # IsEmptyCondition
 # {"description" "Select points with empty payload for a specified field", "type" "object", "required" ["is_empty"], "properties" {"is_empty" {"$ref" "#/components/schemas/PayloadField"}}}
@@ -1467,10 +1465,10 @@ qdrant:InitFrom a jsonschema:ObjectSchema ;
 qdrant:IsEmptyCondition a jsonschema:ObjectSchema ;
   dcterms:description "Select points with empty payload for a specified field" ;
   jsonschema:required "is_empty" ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "is_empty" ;
     rdf:type qdrant:PayloadField ;
-    ] .
+    ]) .
 
 # IsNullCondition
 # {"description" "Select points with null payload for a specified field", "type" "object", "required" ["is_null"], "properties" {"is_null" {"$ref" "#/components/schemas/PayloadField"}}}
@@ -1478,10 +1476,10 @@ qdrant:IsEmptyCondition a jsonschema:ObjectSchema ;
 qdrant:IsNullCondition a jsonschema:ObjectSchema ;
   dcterms:description "Select points with null payload for a specified field" ;
   jsonschema:required "is_null" ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "is_null" ;
     rdf:type qdrant:PayloadField ;
-    ] .
+    ]) .
 
 # LocalShardInfo
 # {"type" "object", "required" ["points_count" "shard_id" "state"], "properties" {"shard_id" {"description" "Local shard id", "type" "integer", "format" "uint32", "minimum" 0}, "points_count" {"description" "Number of points in the shard", "type" "integer", "format" "uint", "minimum" 0}, "state" {"$ref" "#/components/schemas/ReplicaState"}}}
@@ -1568,40 +1566,40 @@ qdrant:Match a jsonschema:DataSchema ;
 
 qdrant:MatchAny a jsonschema:ObjectSchema ;
   jsonschema:required ("any") ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "any" ;
     rdf:type qdrant:AnyVariants ;
-    ] .
+    ]) .
 
 # MatchExcept
 # {"description" "Should have at least one value not matching the any given values", "type" "object", "required" ["except"], "properties" {"except" {"$ref" "#/components/schemas/AnyVariants"}}}
 
 qdrant:MatchExcept a jsonschema:ObjectSchema ;
   jsonschema:required ("except") ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "except" ;
     rdf:type qdrant:AnyVariants ;
-    ] .
+    ]) .
 
 # MatchText
 # {"description" "Full-text match of the strings.", "type" "object", "required" ["text"], "properties" {"text" {"type" "string"}}}
 
 qdrant:MatchText a jsonschema:ObjectSchema ;
   jsonschema:required ("text") ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "text" ;
     rdf:type jsonschema:StringSchema ;
-    ] .
+    ]) .
 
 # MatchValue
 # {"description" "Exact match of the given value", "type" "object", "required" ["value"], "properties" {"value" {"$ref" "#/components/schemas/ValueVariants"}}}
 
 qdrant:MatchValue a jsonschema:ObjectSchema ;
   jsonschema:required ("value") ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "value" ;
     rdf:type qdrant:ValueVariants ;
-    ] .
+    ]) .
 
 # MessageSendErrors
 # {"description" "Message send failures for a particular peer", "type" "object", "required" ["count"], "properties" {"count" {"type" "integer", "format" "uint", "minimum" 0}, "latest_error" {"type" "string", "nullable" true}}}
@@ -1648,10 +1646,10 @@ qdrant:MoveShard a jsonschema:ObjectSchema ;
 
 qdrant:MoveShardOperation a jsonschema:ObjectSchema ;
   jsonschema:required ("move_shard") ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "move_shard" ;
     rdf:type qdrant:MoveShard ;
-    ] .
+    ]) .
 
 # NamedVector
 # {"description" "Vector data with name", "type" "object", "required" ["name" "vector"], "properties" {"name" {"description" "Name of vector data", "type" "string"}, "vector" {"description" "Vector data", "type" "array", "items" {"type" "number", "format" "float"}}}}
@@ -1703,10 +1701,10 @@ qdrant:Nested a jsonschema:ObjectSchema ;
 
 qdrant:NestedCondition a jsonschema:ObjectSchema ;
   jsonschema:required ("nested") ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "nested" ;
     rdf:type qdrant:Nested ;
-    ] .
+    ]) .
 
 # OperationDurationStatistics
 # {"type" "object", "required" ["count"], "properties" {"count" {"type" "integer", "format" "uint", "minimum" 0}, "fail_count" {"type" "integer", "format" "uint", "minimum" 0}, "avg_duration_micros" {"type" "number", "format" "float", "nullable" true}, "min_duration_micros" {"type" "number", "format" "float", "nullable" true}, "max_duration_micros" {"type" "number", "format" "float", "nullable" true}, "last_responded" {"type" "string", "format" "date-time", "nullable" true}}}
@@ -1896,12 +1894,12 @@ qdrant:OptimizersStatus a jsonschema:ObjectSchema ;
 
 qdrant:P2pConfigTelemetry a jsonschema:ObjectSchema ;
   jsonschema:required ("connection_pool_size") ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "connection_pool_size" ;
     rdf:type jsonschema:IntegerSchema ;
     jsonschema:format "uint" ;
     jsonschema:minimum 0 ;
-    ] .
+    ]) .
 
 # Payload
 # {"type" "object"}
@@ -1914,11 +1912,11 @@ qdrant:Payload a jsonschema:ObjectSchema .
 qdrant:PayloadField a jsonschema:ObjectSchema ;
   dcterms:description "Payload field" ;
   jsonschema:required ("key") ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "key" ;
     dcterms:description "Payload field name" ;
     rdf:type jsonschema:StringSchema ;
-    ] .
+    ]) .
 
 # PayloadFieldSchema
 # {"anyOf" [{"$ref" "#/components/schemas/PayloadSchemaType"} {"$ref" "#/components/schemas/PayloadSchemaParams"}]}
@@ -2013,24 +2011,24 @@ qdrant:PayloadSelector a jsonschema:DataSchema ;
 
 qdrant:PayloadSelectorExclude a jsonschema:ObjectSchema ;
   jsonschema:required ("exclude") ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "exclude" ;
     dcterms:description "Exclude this fields from returning payload" ;
     rdf:type jsonschema:ArraySchema ;
     jsonschema:items jsonschema:StringSchema ;
-    ] .
+    ]) .
 
 # PayloadSelectorInclude
 # {"type" "object", "required" ["include"], "properties" {"include" {"description" "Only include this payload keys", "type" "array", "items" {"type" "string"}}}, "additionalProperties" false}
 
 qdrant:PayloadSelectorInclude a jsonschema:ObjectSchema ;
   jsonschema:required ("include") ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "include" ;
     dcterms:description "Only include this payload keys" ;
     rdf:type jsonschema:ArraySchema ;
     jsonschema:items jsonschema:StringSchema ;
-    ] .
+    ]) .
 
 # PayloadStorageType
 # {"description" "Type of payload storage", "oneOf" [{"type" "object", "required" ["type"], "properties" {"type" {"type" "string", "enum" ["in_memory"]}}} {"type" "object", "required" ["type"], "properties" {"type" {"type" "string", "enum" ["on_disk"]}}}]}
@@ -2054,10 +2052,10 @@ qdrant:PayloadStorageType a jsonschema:ObjectSchema ;
 qdrant:PeerInfo a jsonschema:ObjectSchema ;
   dcterms:description "Information of a peer in the cluster" ;
   jsonschema:required ("uri") ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "uri" ;
     rdf:type jsonschema:StringSchema ;
-    ] .
+    ]) .
 
 # PointGroup
 # {"type" "object", "required" ["hits" "id"], "properties" {"hits" {"description" "Scored points that have the same value of the group_by key", "type" "array", "items" {"$ref" "#/components/schemas/ScoredPoint"}}, "id" {"$ref" "#/components/schemas/GroupId"}}}
@@ -2080,11 +2078,11 @@ qdrant:PointGroup a jsonschema:ObjectSchema ;
 
 qdrant:PointIdsList a jsonschema:ObjectSchema ;
   jsonschema:required ("points") ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "points" ;
     rdf:type jsonschema:ArraySchema ;
     jsonschema:items qdrant:ExtendedPointId ;
-    ] .
+    ]) .
 
 # PointInsertOperations
 # {"oneOf" [{"$ref" "#/components/schemas/PointsBatch"} {"$ref" "#/components/schemas/PointsList"}]}
@@ -2160,21 +2158,21 @@ qdrant:PointVectors a jsonschema:ObjectSchema ;
 
 qdrant:PointsBatch a jsonschema:ObjectSchema ;
   jsonschema:required ("batch") ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "batch" ;
     rdf:type qdrant:Batch ;
-    ] .
+    ]) .
 
 # PointsList
 # {"type" "object", "required" ["points"], "properties" {"points" {"type" "array", "items" {"$ref" "#/components/schemas/PointStruct"}}}}
 
 qdrant:PointsList a jsonschema:ObjectSchema ;
   jsonschema:required ("points") ;
-  jsonschema:properties [
+  jsonschema:properties ([
     jsonschema:propertyName "points" ;
     rdf:type jsonschema:ArraySchema ;
     jsonschema:items qdrant:PointStruct ;
-    ] .
+    ]) .
 
 # PointsSelector
 # {"anyOf" [{"$ref" "#/components/schemas/PointIdsList"} {"$ref" "#/components/schemas/FilterSelector"}]}
@@ -2190,10 +2188,11 @@ qdrant:PointsSelector a jsonschema:DataSchema ;
 
 qdrant:ProductQuantization a jsonschema:ObjectSchema ;
   jsonschema:required ("product") ;
-  jsonschema:properties [
-    jsonschema:propertyName "product" ;
-    rdf:type qdrant:ProductQuantizationConfig ;
-    ] .
+  jsonschema:properties (
+    [ jsonschema:propertyName "product" ;
+      rdf:type qdrant:ProductQuantizationConfig ;
+      ]
+    ) .
 
 # ProductQuantizationConfig
 # {"type" "object", "required" ["compression"], "properties" {"compression" {"$ref" "#/components/schemas/CompressionRatio"}, "always_ram" {"type" "boolean", "nullable" true}}}
@@ -3117,11 +3116,11 @@ qdrant:SearchRequestBatch a jsonschema:ObjectSchema ;
     "searches"
     ) ;
   jsonschema:properties
-  [
+  ([
     jsonschema:propertyName "searches" ;
     rdf:type jsonschema:ArraySchema ;
     jsonschema:items qdrant:SearchRequest ; 
-    ] .
+    ]) .
 
 # SegmentConfig
 # {"type" "object", "required" ["payload_storage_type" "vector_data"], "properties" {"vector_data" {"type" "object", "additionalProperties" {"$ref" "#/components/schemas/VectorDataConfig"}}, "payload_storage_type" {"$ref" "#/components/schemas/PayloadStorageType"}}}
