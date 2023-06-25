@@ -1,11 +1,27 @@
 # net.wikipunk/qdrant
 Clojure API client and RDF vocabulary for Qdrant Cloud
 
+## Configuration
+### Option 1: Configure with environment variables 
+Set these to configure the client without using component.
+#### QDRANT_API_KEY 
+The Qdrant Cloud API key for the cluster you want to connect to.
+#### QDRANT_URL 
+The Qdrant Cloud cluster URL.
+#### QDRANT_PORT
+The Qdrant Cloud cluster's port. Defaults to 6333 when unset.
+
+### Option 2: Configure using a component
+`net.wikipunk.qdrant/map->Client` can be provided :api-key and
+:base-url (including the port) to override the environment variables
+and included in your system. For an example, see the [dev
+system](dev/system.edn).
+
 ## :rdfs/seeAlso 
 * https://qdrant.github.io/qdrant/redoc/index.html
 * https://github.com/wkok/openai-clojure (Inspiration for API client generation)
 
-## Usage
+## :dev
 
 ``` shell
 clojure -A:dev
