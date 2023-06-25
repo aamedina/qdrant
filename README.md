@@ -1,5 +1,9 @@
 # net.wikipunk/qdrant
-A new RDF vocabulary for wikipunk.net
+Clojure API client and RDF vocabulary for Qdrant Cloud
+
+## :rdfs/seeAlso 
+* https://qdrant.github.io/qdrant/redoc/index.html
+* https://github.com/wkok/openai-clojure (Inspiration for API client generation)
 
 ## Usage
 

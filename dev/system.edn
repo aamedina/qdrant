@@ -1,4 +1,14 @@
-{:vocab {:sc/create-fn net.wikipunk.rdf/map->UniversalTranslator
-         :boot         [net.wikipunk.qdrant.boot]
-         :config       {:xtdb.lucene/lucene-store
-                        {:db-dir ".vocab/lucene"}}}}
+{:vocab  {:sc/create-fn net.wikipunk.rdf/map->UniversalTranslator
+          :sc/refs      [:openai :qdrant]
+          :boot         [net.wikipunk.qdrant.boot]
+          :config       {:xtdb.lucene/lucene-store
+                         {:db-dir ".vocab/lucene"}}}
+ :openai {:sc/create-fn net.wikipunk.openai/map->Client}
+ :qdrant {:sc/create-fn net.wikipunk.qdrant/map->Client
+          :sc/refs      [:openai]}
+ :client {:sc/create-fn datomic.client.api/client
+          :server-type  :dev-local
+          :system       "dev"}
+ :db     {:sc/create-fn net.wikipunk.datomic/map->Connection
+          :sc/refs      [:client]
+          :db-name      "qdrant"}}
