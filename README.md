@@ -17,6 +17,9 @@ The Qdrant Cloud cluster's port. Defaults to 6333 when unset.
 and included in your system. For an example of a component system, see
 the [dev system](dev/system.edn).
 
+This option is required if you want to use search/recommend functions
+with metaobjects and OpenAI embeddings.
+
 ## :rdfs/seeAlso 
 * https://qdrant.github.io/qdrant/redoc/index.html
 * https://github.com/wkok/openai-clojure (Inspiration for API client generation)

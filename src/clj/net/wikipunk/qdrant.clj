@@ -70,7 +70,9 @@
 
 (defmacro defapi []
   (let [openapi-spec (qdrant.martian/bootstrap-openapi)]
-    `(do 
+    (when-not (thread-bound? #'qdrant.martian/*openapi*)
+      (alter-var-root #'qdrant.martian/*openapi* (constantly openapi-spec)))
+    `(do       
        ~@(for [{:keys [description route-name parameter-aliases]}
                (:handlers openapi-spec)]
            `(defn ~(symbol route-name)
@@ -101,7 +103,10 @@
 
 (defn search
   "Returns a vector of metaobject :db/ident to computed score in the
-  qdrant collection."
+  qdrant collection.
+
+  This function should only be used when using the Client component in
+  the context of a RDF-aware peer for wikipunk.net."
   [query & {:keys [limit collection_name should must must_not consistency]
             :or   {limit *limit* collection_name *collection*}}]
   (when-some [res (:body (search-points
@@ -140,7 +145,10 @@
       (throw (ex-info "Your search could not be processed successfully." res)))))
 
 (defn recommend
-  "Returns points closest to positive and tries to avoid vectors like negative."
+  "Returns points closest to positive and tries to avoid vectors like negative.
+
+  This function should only be used when using the Client component in
+  the context of a RDF-aware peer for wikipunk.net."
   [positive & {:keys [negative limit collection_name should must must_not consistency]
                :or   {limit *limit* collection_name *collection*}}]
   (when-some [res (:body (recommend-points
