@@ -14,8 +14,8 @@ The Qdrant Cloud cluster's port. Defaults to 6333 when unset.
 ### Option 2: Configure using a component
 `net.wikipunk.qdrant/map->Client` can be provided :api-key and
 :base-url (including the port) to override the environment variables
-and included in your system. For an example, see the [dev
-system](dev/system.edn).
+and included in your system. For an example of a component system, see
+the [dev system](dev/system.edn).
 
 ## :rdfs/seeAlso 
 * https://qdrant.github.io/qdrant/redoc/index.html
