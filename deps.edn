@@ -1,12 +1,12 @@
 {:deps
  {danlentz/clj-uuid
   {:mvn/version "0.1.9"}
-  org.clojure/clojure
-  {:mvn/version "1.12.0-alpha3"}
   io.github.aamedina/rdf
-  {:git/sha "e46ee43184a0417fa2ba49ea0a1321bc3606ad81"}
-  io.github.aamedina/openai
-  {:git/sha "f29ca579958f97ba61e63ed7d894963ae21686c1"}
+  {:sha     "4be87367520b88c61939e6788694366ea2a32988"
+   :git/url "https://github.com/aamedina/rdf.git"}
+  io.github.aamedina/openai  
+  {:sha     "36ccbd127e7a542c06a6c26f6a4bc100633aeb27"
+   :git/url "https://github.com/aamedina/openai.git"}
   com.github.oliyh/martian
   {:mvn/version "0.1.24"}
   com.github.oliyh/martian-clj-http
