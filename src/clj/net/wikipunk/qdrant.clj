@@ -47,18 +47,24 @@
     (assoc this :client nil)))
 
 (def ^:dynamic *uuid-ns* uuid/+null+)
+(def ^:dynamic *collection* "metaobjects")
+(def ^:dynamic *limit* 25)
 
 (def mem-v5
   "memoized uuid/v5"
   (memo/memo uuid/v5))
 
 (defn collection-uuid
+  ([]
+   (collection-uuid *collection*))
   ([collection-name]
    (collection-uuid *uuid-ns* collection-name))
   ([uuid-ns collection-name]
    (mem-v5 uuid-ns collection-name)))
 
 (defn ident-uuid
+  ([ident]
+   (ident-uuid *uuid-ns* *collection* ident))
   ([collection-name ident]
    (ident-uuid *uuid-ns* collection-name ident))
   ([uuid-ns collection-name ident]
@@ -79,13 +85,10 @@
               ~(str description)
               {:arglists '([:keys [~@(map symbol (mapcat keys (mapcat vals (vals parameter-aliases))))]])}
               [& {:keys [~@(map symbol (mapcat keys (mapcat vals (vals parameter-aliases))))]
-                  :as ~'params}]
-              (martian/response-for qdrant.martian/*openapi* ~route-name (or ~'params {})))))))
+                  :as   ~'params}]
+              (:body (martian/response-for qdrant.martian/*openapi* ~route-name (or ~'params {}))))))))
 
 (defapi)
-
-(def ^:dynamic *collection* "metaobjects")
-(def ^:dynamic *limit* 25)
 
 (s/def ::filter (s/coll-of string?))
 
@@ -109,34 +112,34 @@
   the context of a RDF-aware peer for wikipunk.net."
   [query & {:keys [limit collection_name should must must_not consistency]
             :or   {limit *limit* collection_name *collection*}}]
-  (when-some [res (:body (search-points
-                           (cond-> {:collection_name collection_name
-                                    :vector          (if (vector? query) query (embed query))
-                                    :limit           limit
-                                    :with_payload    ["ident"]}
-                             should
-                             (assoc-in [:filter :should]
-                                       (into []
-                                             (map (fn [match]
-                                                    {:key "ident" :match {:text match}}))
-                                             should))
+  (when-some [res (search-points
+                    (cond-> {:collection_name collection_name
+                             :vector          (if (vector? query) query (embed query))
+                             :limit           limit
+                             :with_payload    ["ident"]}
+                      should
+                      (assoc-in [:filter :should]
+                                (into []
+                                      (map (fn [match]
+                                             {:key "ident" :match {:text match}}))
+                                      should))
 
-                             must
-                             (assoc-in [:filter :must]
-                                       (into []
-                                             (map (fn [match]
-                                                    {:key "ident" :match {:text match}}))
-                                             must))
+                      must
+                      (assoc-in [:filter :must]
+                                (into []
+                                      (map (fn [match]
+                                             {:key "ident" :match {:text match}}))
+                                      must))
 
-                             must_not
-                             (assoc-in [:filter :must_not]
-                                       (into []
-                                             (map (fn [match]
-                                                    {:key "ident" :match {:text match}}))
-                                             must_not))
+                      must_not
+                      (assoc-in [:filter :must_not]
+                                (into []
+                                      (map (fn [match]
+                                             {:key "ident" :match {:text match}}))
+                                      must_not))
 
-                             consistency
-                             (assoc :consistency consistency))))]
+                      consistency
+                      (assoc :consistency consistency)))]
     (if (= (:status res) "ok")
       (mapv (fn [{:keys [id score payload] :as md}]
               (let [{:keys [ident]} payload]
@@ -151,37 +154,37 @@
   the context of a RDF-aware peer for wikipunk.net."
   [positive & {:keys [negative limit collection_name should must must_not consistency]
                :or   {limit *limit* collection_name *collection*}}]
-  (when-some [res (:body (recommend-points
-                           (cond-> {:collection_name collection_name
-                                    :positive        (mapv (partial ident-uuid collection_name) positive)
-                                    :limit           limit
-                                    :with_payload    ["ident"]}
-                             negative
-                             (assoc :negative (mapv (partial ident-uuid collection_name) negative))
-                                             
-                             should
-                             (assoc-in [:filter :should]
-                                       (into []
-                                             (map (fn [match]
-                                                    {:key "ident" :match {:text match}}))
-                                             should))
+  (when-some [res (recommend-points
+                    (cond-> {:collection_name collection_name
+                             :positive        (mapv (partial ident-uuid collection_name) positive)
+                             :limit           limit
+                             :with_payload    ["ident"]}
+                      negative
+                      (assoc :negative (mapv (partial ident-uuid collection_name) negative))
+                      
+                      should
+                      (assoc-in [:filter :should]
+                                (into []
+                                      (map (fn [match]
+                                             {:key "ident" :match {:text match}}))
+                                      should))
 
-                             must
-                             (assoc-in [:filter :must]
-                                       (into []
-                                             (map (fn [match]
-                                                    {:key "ident" :match {:text match}}))
-                                             must))
+                      must
+                      (assoc-in [:filter :must]
+                                (into []
+                                      (map (fn [match]
+                                             {:key "ident" :match {:text match}}))
+                                      must))
 
-                             must_not
-                             (assoc-in [:filter :must_not]
-                                       (into []
-                                             (map (fn [match]
-                                                    {:key "ident" :match {:text match}}))
-                                             must_not))
+                      must_not
+                      (assoc-in [:filter :must_not]
+                                (into []
+                                      (map (fn [match]
+                                             {:key "ident" :match {:text match}}))
+                                      must_not))
 
-                             consistency
-                             (assoc :consistency consistency))))]
+                      consistency
+                      (assoc :consistency consistency)))]
     (if (= (:status res) "ok")
       (mapv (fn [{:keys [id score payload] :as md}]
               (let [{:keys [ident]} payload]
