@@ -24,7 +24,6 @@
    [net.wikipunk.rdf.xsd]
    [net.wikipunk.rdf.dcterms]
    [net.wikipunk.rdf.as]
-   [net.wikipunk.rdf.jsonschema]
    [net.wikipunk.rdf.schema]
    [net.wikipunk.rdf :as rdf]
    [net.wikipunk.mop :as mop :refer [isa? parents ancestors descendants]]
@@ -40,11 +39,14 @@
       (let [client (qdrant.martian/bootstrap-openapi)]
         (when-not (thread-bound? #'qdrant.martian/*openapi*)
           (alter-var-root #'qdrant.martian/*openapi* (constantly client)))
-        (assoc this :client client))))
+        (assoc this
+               :client client
+               :base-url qdrant.martian/*base-url*
+               :api-key qdrant.martian/*api-key*))))
   (stop [this]
     (when-not (thread-bound? #'qdrant.martian/*openapi*)
       (alter-var-root #'qdrant.martian/*openapi* (constantly nil)))
-    (assoc this :client nil)))
+    (assoc this :client nil :base-url nil :api-key nil)))
 
 (def ^:dynamic *uuid-ns* uuid/+null+)
 (def ^:dynamic *collection* "metaobjects")
