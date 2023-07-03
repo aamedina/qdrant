@@ -21,6 +21,7 @@
    [com.stuartsierra.component :as com]
    [com.stuartsierra.component.repl :refer [reset set-init start stop system]]
    [com.walmartlabs.schematic :as sc]
+   [datomic.client.api :as d]
    [net.wikipunk.boot]
    [net.wikipunk.ext]
    [net.wikipunk.mop :as mop :refer [isa? descendants parents ancestors]]
@@ -29,6 +30,7 @@
    [net.wikipunk.qdrant.boot :as boot]
    [net.wikipunk.qdrant :as qdrant]
    [net.wikipunk.qdrant.martian :as qdrant.martian]
+   [net.wikipunk.punk.db :as db]
    [martian.core :as martian]
    [martian.clj-http :as martian-http]
    [martian.openapi :as openapi])

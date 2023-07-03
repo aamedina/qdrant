@@ -101,10 +101,37 @@
 (s/def ::positive (s/coll-of qualified-keyword?))
 (s/def ::negative (s/coll-of qualified-keyword?))
 
-(defmulti embed
-  "Embed a metaobject into high dimensional space."
-  mop/type-of
+(defmulti embed-value
+  "Uses the metaobjects hierarchy to determine the value to embed."
+  (fn [x] (if (qualified-keyword? x) x mop/type-of))
   :hierarchy #'mop/*metaobjects*)
+
+(defn embed
+  "Embed a metaobject into high dimensional space."
+  [x]
+  (binding [*print-length* 250]
+    (get-in (mem-embeddings :input (pr-str (embed-value x))
+                            :model "text-embedding-ada-002")
+            [:data 0 :embedding])))
+
+(def ^:dynamic *dont-embed*
+  #{:d3f/d3fend-kb-annotation-property})
+
+(defmethod embed-value :rdfs/Resource
+  [x]
+  (reduce-kv (fn [m k v]
+               (cond
+                 (some #(isa? k %) *dont-embed*)
+                 m
+                 
+                 :else (assoc m k v)))
+             {} (datafy x)))
+
+(defmethod embed-value :default
+  [x]
+  ;; by default attempt to embed the value directly
+  x)
+
 
 (defn search
   "Returns a vector of metaobject :db/ident to computed score in the
@@ -194,24 +221,3 @@
             (:result res))
       (throw (ex-info "Your search could not be processed successfully." res)))))
 
-(def ^:dynamic *dont-embed*
-  #{:d3fend/d3fend-kb-reference-annotation
-    :d3fend/d3fend-kb-annotation-property
-    :d3fend/d3fend-annotation
-    :d3fend/kb-article})
-
-(defmethod embed clojure.lang.Keyword
-  [x]
-  (binding [rdf/*datafy-mop* (or rdf/*datafy-mop*
-                                 (and (not (or (isa? x :owl/NamedIndividual) (isa? x :rdf/Property)))
-                                      (isa? x :rdfs/Class)))]
-    (get-in (mem-embeddings :input (binding [*print-length* 150]
-                                     (pr-str (apply dissoc (datafy x) *dont-embed*)))
-                            :model "text-embedding-ada-002")
-            [:data 0 :embedding])))
-
-(defmethod embed :default
-  [x]
-  (get-in (mem-embeddings :input (pr-str x)
-                          :model "text-embedding-ada-002")
-          [:data 0 :embedding]))
