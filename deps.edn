@@ -1,11 +1,8 @@
 {:deps
  {danlentz/clj-uuid
   {:mvn/version "0.1.9"}
-  io.github.aamedina/rdf
-  {:sha     "c3112ec160eed7d321f8b94a59c536c26612c90e"
-   :git/url "https://github.com/aamedina/rdf.git"}
   io.github.aamedina/openai  
-  {:sha     "c34907a2a9b84ad3ce0d7243bbbda2dc06607793"
+  {:sha     "6444f1149d16f4df4205a3a2935048bba55f9688"
    :git/url "https://github.com/aamedina/openai.git"}
   com.github.oliyh/martian
   {:mvn/version "0.1.24"}
@@ -21,9 +18,6 @@
   {:extra-deps
    {com.datomic/dev-local
     {:mvn/version "1.0.243"}
-    io.github.aamedina/punk.db
-    {:sha     "fc5cc055c482fb3cf6f0188fa7521496ba9c7012"
-     :git/url "https://github.com/aamedina/punk.db.git"}
     com.github.oliyh/martian-test
     {:mvn/version "0.1.24"}
     com.walmartlabs/schematic

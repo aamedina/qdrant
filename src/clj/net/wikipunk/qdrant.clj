@@ -26,10 +26,9 @@
    [net.wikipunk.rdf.as]
    [net.wikipunk.rdf.schema]
    [net.wikipunk.rdf :as rdf]
-   [net.wikipunk.mop :as mop :refer [isa? parents ancestors descendants]]
+   [net.wikipunk.mop :as mop]
    [net.wikipunk.openai :as openai]
-   [net.wikipunk.qdrant.martian :as qdrant.martian])
-  (:refer-clojure :exclude [isa? parents ancestors descendants]))
+   [net.wikipunk.qdrant.martian :as qdrant.martian]))
 
 (defrecord Client [base-url api-key client]
   com/Lifecycle
@@ -103,8 +102,7 @@
 
 (defmulti embed-value
   "Uses the metaobjects hierarchy to determine the value to embed."
-  (fn [x] (if (qualified-keyword? x) x mop/type-of))
-  :hierarchy #'mop/*metaobjects*)
+  (fn [x] (if (qualified-keyword? x) x mop/type-of)))
 
 (defn embed
   "Embed a metaobject into high dimensional space."

@@ -7,9 +7,8 @@
    [clojure.test.check.properties :as prop]
    [clojure.test.check.clojure-test :refer [defspec]]
    [net.wikipunk.rdf :as rdf]
-   [net.wikipunk.mop :as mop :refer [isa? descendants ancestors parents]]
-   [net.wikipunk.qdrant :as qdrant])
-  (:refer-clojure :exclude [isa? descendants ancestors parents]))
+   [net.wikipunk.mop :as mop]
+   [net.wikipunk.qdrant :as qdrant]))
 
 ;; TODO: write tests!
 
